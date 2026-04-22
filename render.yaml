@@ -28,8 +28,8 @@ services:
       - key: CORS_ORIGIN
         value: http://localhost:3000,https://chefstation.netlify.app
       - key: SEED_SUPER_ADMIN_USERNAME
-        value: admin
+        value: adminemon@gmail.com
       - key: SEED_SUPER_ADMIN_PASSWORD
-        value: changeme123
+        value: change-this-in-render-env
       - key: UPLOAD_DIR
         value: /opt/render/project/uploads

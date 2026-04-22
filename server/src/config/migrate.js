@@ -173,14 +173,24 @@ async function migrate() {
   const { rows } = await pool.query(
     "SELECT id FROM users WHERE role = 'super_admin' LIMIT 1"
   );
+  const hash = await bcrypt.hash(env.SEED_SUPER_ADMIN_PASSWORD, 12);
   if (rows.length === 0) {
-    const hash = await bcrypt.hash(env.SEED_SUPER_ADMIN_PASSWORD, 12);
     await pool.query(
       `INSERT INTO users (username, password_hash, display_name, role, restaurant_id)
        VALUES ($1, $2, $3, 'super_admin', NULL)`,
       [env.SEED_SUPER_ADMIN_USERNAME, hash, 'Super Admin']
     );
     console.log(`[migrate] seeded super admin: ${env.SEED_SUPER_ADMIN_USERNAME}`);
+  } else {
+    await pool.query(
+      `UPDATE users
+       SET username = $2,
+           password_hash = $3,
+           display_name = 'Super Admin'
+       WHERE id = $1`,
+      [rows[0].id, env.SEED_SUPER_ADMIN_USERNAME, hash]
+    );
+    console.log(`[migrate] synced super admin credentials: ${env.SEED_SUPER_ADMIN_USERNAME}`);
   }
 
   await seedDemoData();
