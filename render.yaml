@@ -27,6 +27,14 @@ services:
         value: 24h
       - key: CORS_ORIGIN
         value: http://localhost:3000,https://chefstation.netlify.app
+      - key: API_RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: API_RATE_LIMIT_MAX
+        value: 2000
+      - key: AUTH_RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: AUTH_RATE_LIMIT_MAX
+        value: 200
       - key: SEED_SUPER_ADMIN_USERNAME
         value: adminemon@gmail.com
       - key: SEED_SUPER_ADMIN_PASSWORD
