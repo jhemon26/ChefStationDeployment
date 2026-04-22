@@ -26,7 +26,7 @@ services:
       - key: JWT_EXPIRES_IN
         value: 24h
       - key: CORS_ORIGIN
-        value: https://your-netlify-site.netlify.app
+        value: http://localhost:3000,https://chefstation.netlify.app
       - key: SEED_SUPER_ADMIN_USERNAME
         value: admin
       - key: SEED_SUPER_ADMIN_PASSWORD
