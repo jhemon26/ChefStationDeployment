@@ -1,0 +1,41 @@
+:root {
+  --bg-deep: #0a0e17;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2236;
+  --bg-input: #0d1220;
+  --green: #00e68a;
+  --green-dim: #00e68a33;
+  --green-glow: #00e68a22;
+  --red: #ff4d6a;
+  --red-dim: #ff4d6a33;
+  --amber: #ffb347;
+  --amber-dim: #ffb34733;
+  --blue: #4da6ff;
+  --blue-dim: #4da6ff33;
+  --purple: #a78bfa;
+  --purple-dim: #a78bfa33;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --border: #1e293b;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+.allergen-chip.celery { background: #32cd3233; color: #32cd32; }
+.allergen-chip.crustaceans { background: #ff8c0033; color: #ff8c00; }
+.allergen-chip.dairy { background: #4da6ff33; color: #4da6ff; }
+.allergen-chip.eggs { background: #ffb34733; color: #ffb347; }
+.allergen-chip.fish { background: #20b2aa33; color: #20b2aa; }
+.allergen-chip.gluten { background: #ff634733; color: #ff6347; }
+.allergen-chip.lupin { background: #ff69b433; color: #ff69b4; }
+.allergen-chip.molluscs { background: #7b68ee33; color: #7b68ee; }
+.allergen-chip.mustard { background: #ffd70033; color: #ffd700; }
+.allergen-chip.nuts { background: #daa52033; color: #daa520; }
+.allergen-chip.peanuts { background: #cd853f33; color: #cd853f; }
+.allergen-chip.sesame { background: #d2691e33; color: #d2691e; }
+.allergen-chip.soy { background: #9acd3233; color: #9acd32; }
+.allergen-chip.sulphites { background: #a78bfa33; color: #a78bfa; }
+.allergen-chip.custom { background: #64748b33; color: #94a3b8; border: 1px dashed #475569; }
