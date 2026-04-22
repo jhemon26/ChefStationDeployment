@@ -4,8 +4,8 @@ const env = require('../config/env');
 const skipInDevelopment = () => env.NODE_ENV === 'development';
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: env.API_RATE_LIMIT_WINDOW_MS,
+  max: env.API_RATE_LIMIT_MAX,
   standardHeaders: true,
   legacyHeaders: false,
   skip: skipInDevelopment,
@@ -13,8 +13,8 @@ const apiLimiter = rateLimit({
 });
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
+  windowMs: env.AUTH_RATE_LIMIT_WINDOW_MS,
+  max: env.AUTH_RATE_LIMIT_MAX,
   standardHeaders: true,
   legacyHeaders: false,
   skip: skipInDevelopment,
