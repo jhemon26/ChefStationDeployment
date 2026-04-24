@@ -204,30 +204,47 @@ textarea {
 }
 
 .logo-monogram {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
+  width: 100%;
+  height: 100%;
   transform: translateX(-1px);
+}
+
+.logo-monogram-bar {
+  position: absolute;
+  left: 16px;
+  right: 15px;
+  top: 50%;
+  height: 8px;
+  border-radius: 999px;
+  background: #09131f;
+  transform: translateY(-50%);
+  opacity: 0.95;
 }
 
 .logo-glyph {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 2.15rem;
-  line-height: 1;
+  font-size: 2.45rem;
+  line-height: 0.9;
   color: #09131f;
-  letter-spacing: -0.1em;
+  letter-spacing: -0.16em;
   text-transform: lowercase;
   display: inline-block;
+  position: relative;
+  z-index: 1;
 }
 
 .logo-glyph-c {
-  transform: translateX(4px) scaleX(1.06);
+  transform: translateX(5px) scaleX(1.02);
 }
 
 .logo-glyph-s {
-  transform: translateX(-5px) scaleX(1.02);
+  transform: translateX(-6px) scaleX(0.98);
 }
 
 .logo-text,

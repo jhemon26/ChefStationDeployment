@@ -3,6 +3,7 @@ export default function BrandLogo({ centered = false }) {
     <div className={`sidebar-logo brand-logo ${centered ? 'brand-logo-centered' : ''}`}>
       <div className="logo-icon" aria-hidden="true">
         <div className="logo-monogram">
+          <span className="logo-monogram-bar" />
           <span className="logo-glyph logo-glyph-c">c</span>
           <span className="logo-glyph logo-glyph-s">s</span>
         </div>
