@@ -148,7 +148,6 @@ export default function ProfilePage() {
             </>
           ) : (
             <div className="control-card-footer">
-              <button className="btn btn-ghost" type="button" onClick={() => setEditOpen(true)}>Edit Profile</button>
               <button className="btn btn-danger" type="button" onClick={logout}>Logout</button>
             </div>
           )}
