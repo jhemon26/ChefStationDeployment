@@ -86,18 +86,14 @@ textarea {
   resize: vertical;
 }
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(143, 157, 255, 0.26);
-  border-radius: 999px;
+  width: 0;
+  height: 0;
 }
 
 .material-symbols-outlined {
@@ -198,7 +194,8 @@ textarea {
   width: 70px;
   height: 70px;
   border-radius: 18px;
-  display: block;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background: linear-gradient(135deg, #1cf28f 0%, #1fe6c4 52%, #30d975 100%);
   box-shadow:
@@ -206,24 +203,31 @@ textarea {
     0 16px 32px rgba(16, 240, 147, 0.16);
 }
 
+.logo-monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transform: translateX(-1px);
+}
+
 .logo-glyph {
-  position: absolute;
-  top: 50%;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 2.55rem;
+  font-size: 2.15rem;
   line-height: 1;
   color: #09131f;
-  transform: translateY(-50%);
-  letter-spacing: -0.12em;
+  letter-spacing: -0.1em;
+  text-transform: lowercase;
+  display: inline-block;
 }
 
 .logo-glyph-c {
-  left: 10px;
+  transform: translateX(4px) scaleX(1.06);
 }
 
 .logo-glyph-s {
-  right: 7px;
+  transform: translateX(-5px) scaleX(1.02);
 }
 
 .logo-text,
