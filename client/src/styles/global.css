@@ -157,6 +157,7 @@ textarea {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
   z-index: 190;
+  overflow-y: auto;
 }
 
 .main {
@@ -1226,7 +1227,9 @@ textarea {
   .sidebar {
     top: 0;
     left: 0;
-    bottom: 0;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+    width: min(86vw, 340px);
+    padding-bottom: 18px;
     border-radius: 0 28px 28px 0;
     transform: translateX(-100%);
     transition: transform 0.24s ease;
@@ -1547,5 +1550,19 @@ textarea {
 
   .main {
     padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 118px);
+  }
+
+  .sidebar {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 104px);
+    width: calc(100vw - 24px);
+    max-width: 360px;
+  }
+
+  .sidebar-footer {
+    position: sticky;
+    bottom: 0;
+    margin-top: 10px;
+    padding-bottom: 8px;
+    background: linear-gradient(180deg, rgba(16, 27, 40, 0), rgba(16, 27, 40, 0.94) 20%, rgba(16, 27, 40, 0.98));
   }
 }
