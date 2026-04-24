@@ -183,29 +183,76 @@ textarea {
   border-bottom: 1px solid var(--border);
 }
 
+.brand-logo {
+  margin-bottom: 0;
+}
+
+.brand-logo-centered {
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
 .logo-icon,
 .logo-mark {
-  width: 46px;
-  height: 46px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--purple), var(--blue));
-  color: #fff;
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  display: block;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1cf28f 0%, #1fe6c4 52%, #30d975 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 16px 32px rgba(16, 240, 147, 0.16);
+}
+
+.logo-glyph {
+  position: absolute;
+  top: 50%;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 2.55rem;
+  line-height: 1;
+  color: #09131f;
+  transform: translateY(-50%);
+  letter-spacing: -0.12em;
+}
+
+.logo-glyph-c {
+  left: 10px;
+}
+
+.logo-glyph-s {
+  right: 7px;
 }
 
 .logo-text,
 .logo-type {
   font-family: var(--font-display);
+  display: flex;
+  align-items: baseline;
+  gap: 0;
   font-size: 1.14rem;
   font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
-.logo-text span,
+.logo-text-chef {
+  color: #eef3ff;
+}
+
+.logo-text-station,
 .logo-type span:last-child {
-  color: var(--blue);
+  color: #1fe897;
+}
+
+.brand-logo-centered .logo-icon {
+  width: 72px;
+  height: 72px;
+}
+
+.brand-logo-centered .logo-text {
+  font-size: 1.22rem;
 }
 
 .nav,
@@ -1066,20 +1113,6 @@ textarea {
   margin-top: 18px;
 }
 
-.confirm-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 72px;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 10px;
-  background: rgba(255, 77, 106, 0.12);
-  border: 1px solid rgba(255, 77, 106, 0.35);
-  color: var(--red);
-  margin-bottom: 12px;
-}
-
 .confirm-title {
   font-family: var(--font-display);
   font-size: 1.22rem;
@@ -1127,6 +1160,8 @@ textarea {
 .auth-card .sidebar-logo {
   justify-content: center;
   margin-bottom: 22px;
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .auth-box h2,
@@ -1212,6 +1247,47 @@ textarea {
   background: none;
   border: none;
   padding: 0;
+}
+
+.auth-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid transparent;
+}
+
+.auth-alert-error {
+  background:
+    linear-gradient(180deg, rgba(255, 77, 106, 0.08), rgba(16, 27, 40, 0.96)),
+    rgba(16, 27, 40, 0.96);
+  border-color: rgba(255, 77, 106, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 10px 28px rgba(255, 77, 106, 0.08);
+}
+
+.auth-alert-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #ff8fa3;
+  margin-top: 2px;
+}
+
+.auth-alert-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff0f3;
+  margin-bottom: 4px;
+}
+
+.auth-alert-message {
+  color: #d9e2f2;
+  font-size: 0.76rem;
+  line-height: 1.55;
 }
 
 .error-text {

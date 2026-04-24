@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { navigationByRole } from '../utils/navigation';
+import BrandLogo from './BrandLogo';
 
 export default function Sidebar({ open, setOpen }) {
   const { user, logout } = useAuth();
@@ -22,10 +23,7 @@ export default function Sidebar({ open, setOpen }) {
 
   return (
     <aside className={`sidebar ${open ? 'open' : ''}`}>
-      <div className="sidebar-logo">
-        <div className="logo-icon">CS</div>
-        <div className="logo-text">Chef<span>Station</span></div>
-      </div>
+      <BrandLogo />
 
       {sections.map((section) => (
         <div key={section.label}>

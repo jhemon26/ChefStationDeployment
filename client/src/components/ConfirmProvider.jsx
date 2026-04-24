@@ -43,7 +43,6 @@ export function ConfirmProvider({ children }) {
       {dialog ? (
         <div className="confirm-overlay" onClick={() => close(false)}>
           <div className="confirm-dialog" onClick={(event) => event.stopPropagation()}>
-            <div className="confirm-badge">Delete</div>
             <h2 className="confirm-title">{dialog.title}</h2>
             <p className="confirm-message">{dialog.message}</p>
             <p className="confirm-hint">This action may remove data permanently. Please confirm before continuing.</p>

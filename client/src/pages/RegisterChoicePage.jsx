@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 
 export default function RegisterChoicePage() {
   return (
     <div className="auth-page">
       <div className="auth-box">
         <div className="lock-icon blue"><span className="material-symbols-outlined" aria-hidden="true">groups</span></div>
-        <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 28 }}>
-          <div className="logo-icon">CS</div>
-          <div className="logo-text">Chef<span>Station</span></div>
-        </div>
+        <BrandLogo centered />
         <h2>Create Account</h2>
         <p className="sub">Choose your registration type</p>
         <Link className="card" to="/register/restaurant" style={{ display: 'block', cursor: 'pointer', marginBottom: 12, borderColor: 'var(--blue-dim)' }}>
