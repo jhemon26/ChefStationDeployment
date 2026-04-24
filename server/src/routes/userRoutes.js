@@ -2,6 +2,7 @@ const express = require('express');
 const { body, param } = require('express-validator');
 const controller = require('../controllers/userController');
 const { requireRole } = require('../middleware/auth');
+const { avatarUpload } = require('../middleware/fileUpload');
 const { validate } = require('../middleware/validate');
 
 const router = express.Router();
@@ -9,6 +10,7 @@ const router = express.Router();
 router.get('/me', controller.me);
 router.put(
   '/me',
+  avatarUpload.single('avatar'),
   [
     body('username').optional().trim().isLength({ min: 3 }),
     body('displayName').optional().trim().notEmpty(),

@@ -17,6 +17,8 @@ export default function Sidebar({ open, setOpen }) {
     user?.role === 'super_admin'
       ? 'Platform Admin'
       : `${user?.role === 'owner' ? 'Owner' : 'Staff'}`;
+  const apiBase = (import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '');
+  const avatarSrc = user?.avatar_url ? `${apiBase}${user.avatar_url}` : null;
 
   return (
     <aside className={`sidebar ${open ? 'open' : ''}`}>
@@ -45,19 +47,23 @@ export default function Sidebar({ open, setOpen }) {
         </div>
       ))}
 
-      <div style={{ padding: '8px 0' }}>
-        <button type="button" className="nav-item" onClick={logout} style={{ color: 'var(--red)', width: '100%', background: 'transparent' }}>
+      <div className="sidebar-account">
+        <NavLink to="/profile" className="sidebar-footer" onClick={() => setOpen(false)}>
+          {avatarSrc ? (
+            <img className="sidebar-avatar-image" src={avatarSrc} alt={user.display_name} />
+          ) : (
+            <div className={`avatar ${user.role}`}>{initials}</div>
+          )}
+          <div className="user-info">
+            <div className="name">{user.display_name}</div>
+            <div className={`role ${roleClass}`}>{roleLabel}</div>
+            <div className="sidebar-profile-hint">Tap to view and edit profile</div>
+          </div>
+        </NavLink>
+        <button type="button" className="nav-item sidebar-logout-btn" onClick={logout} style={{ color: 'var(--red)', width: '100%', background: 'transparent' }}>
           <span className="nav-icon material-symbols-outlined" aria-hidden="true">logout</span>
           <span className="nav-link-copy">Logout</span>
         </button>
-      </div>
-
-      <div className="sidebar-footer">
-        <div className={`avatar ${user.role}`}>{initials}</div>
-        <div className="user-info">
-          <div className="name">{user.display_name}</div>
-          <div className={`role ${roleClass}`}>{roleLabel}</div>
-        </div>
       </div>
     </aside>
   );

@@ -9,7 +9,7 @@ async function authenticate(req, res, next) {
   try {
     const decoded = verify(token);
     const { rows } = await query(
-      'SELECT id, restaurant_id, username, display_name, role, is_active FROM users WHERE id = $1',
+      'SELECT id, restaurant_id, username, display_name, avatar_url, role, is_active FROM users WHERE id = $1',
       [decoded.userId]
     );
     const user = rows[0];

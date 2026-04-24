@@ -1,5 +1,29 @@
+const fs = require('fs/promises');
+const path = require('path');
 const User = require('../models/User');
 const { hashPassword, comparePassword } = require('../utils/hashPassword');
+const { compressImage } = require('../utils/compressImage');
+const { avatarUploadRoot } = require('../middleware/fileUpload');
+
+const toPublicAvatarUrl = (filename) => `/uploads/users/${filename}`;
+
+const avatarUrlToPath = (avatarUrl) => {
+  if (!avatarUrl || !avatarUrl.startsWith('/uploads/users/')) return null;
+  return path.join(avatarUploadRoot, path.basename(avatarUrl));
+};
+
+async function finalizeAvatarUpload(file) {
+  if (!file) return null;
+  const outputName = `${path.parse(file.filename).name.replace(/^tmp-/, '')}.webp`;
+  const outputPath = path.join(avatarUploadRoot, outputName);
+  await compressImage(file.path, outputPath);
+  return toPublicAvatarUrl(outputName);
+}
+
+async function cleanupFile(filePath) {
+  if (!filePath) return;
+  await fs.unlink(filePath).catch(() => {});
+}
 
 async function list(req, res, next) {
   try {
@@ -24,6 +48,7 @@ async function me(req, res, next) {
 }
 
 async function updateMe(req, res, next) {
+  let avatarUrl = null;
   try {
     const current = await User.findAuthById(req.user.id);
     if (!current) return res.status(404).json({ error: 'User not found' });
@@ -47,13 +72,27 @@ async function updateMe(req, res, next) {
       passwordHash = await hashPassword(newPassword);
     }
 
+    if (req.file) {
+      avatarUrl = await finalizeAvatarUpload(req.file);
+    }
+
     const updated = await User.updateSelf(current.id, {
       username: nextUsername || null,
       display_name: nextDisplayName || null,
       password_hash: passwordHash,
+      avatar_url: avatarUrl,
     });
+
+    if (avatarUrl && current.avatar_url && current.avatar_url !== avatarUrl) {
+      await cleanupFile(avatarUrlToPath(current.avatar_url));
+    }
+
     res.json(updated);
-  } catch (e) { next(e); }
+  } catch (e) {
+    await cleanupFile(req.file?.path);
+    await cleanupFile(avatarUrlToPath(avatarUrl));
+    next(e);
+  }
 }
 
 async function suspend(req, res, next) {

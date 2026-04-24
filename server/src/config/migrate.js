@@ -362,6 +362,7 @@ async function migrate() {
   await pool.query(`ALTER TABLE stock_items ADD COLUMN IF NOT EXISTS item_size FLOAT`);
   await pool.query(`ALTER TABLE stock_items ADD COLUMN IF NOT EXISTS item_detail VARCHAR(100)`);
   await pool.query(`ALTER TABLE stock_items ADD COLUMN IF NOT EXISTS max_level FLOAT`);
+  await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(500)`);
   await backfillStockCategoriesForAllRestaurants();
   console.log('[migrate] schema applied');
 

@@ -1,6 +1,6 @@
 const { query } = require('../config/db');
 
-const publicFields = `id, restaurant_id, username, display_name, role, is_active, last_login, created_at`;
+const publicFields = `id, restaurant_id, username, display_name, avatar_url, role, is_active, last_login, created_at`;
 
 const findById = async (id) => {
   const { rows } = await query(`SELECT ${publicFields} FROM users WHERE id = $1`, [id]);
@@ -9,7 +9,7 @@ const findById = async (id) => {
 
 const findAuthById = async (id) => {
   const { rows } = await query(
-    `SELECT id, restaurant_id, username, password_hash, display_name, role, is_active, last_login, created_at
+    `SELECT id, restaurant_id, username, password_hash, display_name, avatar_url, role, is_active, last_login, created_at
      FROM users WHERE id = $1`,
     [id]
   );
@@ -18,7 +18,7 @@ const findAuthById = async (id) => {
 
 const findByUsername = async (username) => {
   const { rows } = await query(
-    `SELECT id, restaurant_id, username, password_hash, display_name, role, is_active FROM users WHERE username = $1`,
+    `SELECT id, restaurant_id, username, password_hash, display_name, avatar_url, role, is_active FROM users WHERE username = $1`,
     [username]
   );
   return rows[0] || null;
@@ -68,15 +68,16 @@ const updatePassword = async (id, password_hash) => {
   await query(`UPDATE users SET password_hash = $2 WHERE id = $1`, [password_hash, id]);
 };
 
-const updateSelf = async (id, { username, display_name, password_hash }) => {
+const updateSelf = async (id, { username, display_name, password_hash, avatar_url }) => {
   const { rows } = await query(
     `UPDATE users SET
        username = COALESCE($2, username),
        display_name = COALESCE($3, display_name),
-       password_hash = COALESCE($4, password_hash)
+       password_hash = COALESCE($4, password_hash),
+       avatar_url = COALESCE($5, avatar_url)
      WHERE id = $1
      RETURNING ${publicFields}`,
-    [id, username, display_name, password_hash]
+    [id, username, display_name, password_hash, avatar_url]
   );
   return rows[0] || null;
 };
