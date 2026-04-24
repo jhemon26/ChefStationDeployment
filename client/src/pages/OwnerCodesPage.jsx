@@ -30,31 +30,34 @@ export default function OwnerCodesPage() {
       <PageHeader title="Invite Codes" subtitle="48-hour staff onboarding codes" actions={<button className="btn btn-primary" type="button" onClick={generate}>Generate New Code</button>} />
       {latest ? <div className="card" style={{ font: '800 2rem var(--font-display)', color: 'var(--green)', letterSpacing: 4 }}>{latest}</div> : null}
       <div style={{ height: 16 }} />
-      <div className="card">
-        <div className="table-scroll">
-          <table className="list-table">
-            <thead>
-              <tr><th>Code</th><th>Status</th><th>Used By</th><th>Expires</th><th>Action</th></tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => {
-                const status = row.is_used ? 'Used' : new Date(row.expires_at) < new Date() ? 'Expired' : 'Available';
-                return (
-                  <tr key={row.id}>
-                    <td>{row.code}</td>
-                    <td>{status}</td>
-                    <td>{row.used_by_name || 'N/A'}</td>
-                    <td>{formatDateTime(row.expires_at)}</td>
-                    <td>{status === 'Available' ? <button type="button" className="btn btn-danger" onClick={async () => {
-                      if (!(await confirmAction(`Revoke invite code ${row.code}?`, { title: 'Warning', confirmLabel: 'Revoke Code' }))) return;
-                      deleteInviteCode(row.id).then(load);
-                    }}>Revoke</button> : null}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+      <div className="control-list">
+        {rows.map((row) => {
+          const status = row.is_used ? 'Used' : new Date(row.expires_at) < new Date() ? 'Expired' : 'Available';
+          return (
+            <div key={row.id} className="control-card">
+              <div className="control-card-head">
+                <div className="control-card-title control-code">{row.code}</div>
+                <div className={`status-chip ${status === 'Available' ? 'active' : status === 'Used' ? 'done' : 'pending'}`}>{status}</div>
+              </div>
+              <div className="control-card-grid">
+                <div>
+                  <div className="helper-text">Used By</div>
+                  <div>{row.used_by_name || 'N/A'}</div>
+                </div>
+                <div>
+                  <div className="helper-text">Expires</div>
+                  <div>{formatDateTime(row.expires_at)}</div>
+                </div>
+              </div>
+              {status === 'Available' ? <div className="control-card-footer">
+                <button type="button" className="btn btn-danger" onClick={async () => {
+                  if (!(await confirmAction(`Revoke invite code ${row.code}?`, { title: 'Warning', confirmLabel: 'Revoke Code' }))) return;
+                  deleteInviteCode(row.id).then(load);
+                }}>Revoke</button>
+              </div> : null}
+            </div>
+          );
+        })}
       </div>
     </AppShell>
   );

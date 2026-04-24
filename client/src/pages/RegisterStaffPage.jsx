@@ -28,7 +28,7 @@ export default function RegisterStaffPage() {
   return (
     <div className="auth-page">
       <form className="auth-box" onSubmit={onSubmit}>
-        <div className="lock-icon green"><svg><use href="#ico-key" /></svg></div>
+        <div className="lock-icon green"><span className="material-symbols-outlined" aria-hidden="true">key</span></div>
         <h2>Join with Invite Code</h2>
         <p className="sub">Enter the code your restaurant owner shared</p>
         <div className="form-group">

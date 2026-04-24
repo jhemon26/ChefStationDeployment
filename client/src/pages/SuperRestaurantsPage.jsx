@@ -20,33 +20,34 @@ export default function SuperRestaurantsPage() {
   return (
     <AppShell>
       <PageHeader title="Restaurants" subtitle="Suspend, activate, or delete tenants" />
-      <div className="card">
-        <div className="table-scroll">
-          <table className="list-table">
-            <thead>
-              <tr><th>Name</th><th>Phone</th><th>Users</th><th>Status</th><th>Action</th></tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.name}</td>
-                  <td>{row.phone || 'N/A'}</td>
-                  <td>{row.user_count}</td>
-                  <td>{row.is_active ? 'Active' : 'Inactive'}</td>
-                  <td className="toolbar">
-                    <button type="button" className="btn btn-ghost" onClick={() => (row.is_active ? suspendRestaurant(row.id) : activateRestaurant(row.id)).then(load)}>
-                      {row.is_active ? 'Suspend' : 'Activate'}
-                    </button>
-                    <button type="button" className="btn btn-danger" onClick={async () => {
-                      if (!(await confirmAction(`Delete restaurant "${row.name}"? This cannot be undone.`, { confirmLabel: 'Delete Restaurant' }))) return;
-                      deleteRestaurant(row.id).then(load);
-                    }}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="control-list">
+        {rows.map((row) => (
+          <div key={row.id} className="control-card">
+            <div className="control-card-head">
+              <div className="control-card-title">{row.name}</div>
+              <div className={`status-chip ${row.is_active ? 'active' : 'inactive'}`}>{row.is_active ? 'Active' : 'Inactive'}</div>
+            </div>
+            <div className="control-card-grid">
+              <div>
+                <div className="helper-text">Phone</div>
+                <div>{row.phone || 'N/A'}</div>
+              </div>
+              <div>
+                <div className="helper-text">Users</div>
+                <div>{row.user_count}</div>
+              </div>
+            </div>
+            <div className="control-card-footer">
+              <button type="button" className="btn btn-ghost" onClick={() => (row.is_active ? suspendRestaurant(row.id) : activateRestaurant(row.id)).then(load)}>
+                {row.is_active ? 'Suspend' : 'Activate'}
+              </button>
+              <button type="button" className="btn btn-danger" onClick={async () => {
+                if (!(await confirmAction(`Delete restaurant "${row.name}"? This cannot be undone.`, { confirmLabel: 'Delete Restaurant' }))) return;
+                deleteRestaurant(row.id).then(load);
+              }}>Delete</button>
+            </div>
+          </div>
+        ))}
       </div>
     </AppShell>
   );

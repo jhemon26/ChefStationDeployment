@@ -1,27 +1,27 @@
 :root {
-  --bg-deep: #0a0e17;
-  --bg-card: #111827;
-  --bg-card-hover: #1a2236;
-  --bg-input: #0d1220;
-  --green: #00e68a;
-  --green-dim: #00e68a33;
-  --green-glow: #00e68a22;
-  --red: #ff4d6a;
-  --red-dim: #ff4d6a33;
-  --amber: #ffb347;
-  --amber-dim: #ffb34733;
-  --blue: #4da6ff;
-  --blue-dim: #4da6ff33;
-  --purple: #a78bfa;
-  --purple-dim: #a78bfa33;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --border: #1e293b;
+  --bg-deep: #09111a;
+  --bg-card: rgba(16, 27, 40, 0.88);
+  --bg-card-hover: rgba(22, 37, 53, 0.94);
+  --bg-input: rgba(10, 19, 31, 0.96);
+  --green: #74e6b2;
+  --green-dim: rgba(116, 230, 178, 0.16);
+  --green-glow: rgba(116, 230, 178, 0.18);
+  --red: #ff7b7b;
+  --red-dim: rgba(255, 123, 123, 0.16);
+  --amber: #ffb55e;
+  --amber-dim: rgba(255, 181, 94, 0.16);
+  --blue: #67c8ff;
+  --blue-dim: rgba(103, 200, 255, 0.16);
+  --purple: #8f9dff;
+  --purple-dim: rgba(143, 157, 255, 0.16);
+  --text-primary: #edf4ff;
+  --text-secondary: #9aadc1;
+  --text-muted: #70859d;
+  --border: rgba(132, 177, 222, 0.14);
   --font-display: 'Syne', sans-serif;
   --font-mono: 'DM Mono', monospace;
-  --radius: 10px;
-  --radius-sm: 6px;
+  --radius: 24px;
+  --radius-sm: 16px;
 }
 
 .allergen-chip.celery { background: #32cd3233; color: #32cd32; }

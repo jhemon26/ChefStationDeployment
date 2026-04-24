@@ -23,7 +23,7 @@ export default function LoginPage() {
   return (
     <div className="auth-page">
       <form className="auth-box" onSubmit={onSubmit}>
-        <div className="lock-icon green"><svg><use href="#ico-lock" /></svg></div>
+        <div className="lock-icon green"><span className="material-symbols-outlined" aria-hidden="true">lock</span></div>
         <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 28 }}>
           <div className="logo-icon">CS</div>
           <div className="logo-text">Chef<span>Station</span></div>

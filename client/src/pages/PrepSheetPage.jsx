@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import AppShell from '../components/AppShell';
 import PageHeader from '../components/PageHeader';
-import PrepTaskRow from '../components/PrepTaskRow';
 import { createPrepTask, deletePrepTask, listPrepTasks, updatePrepTask } from '../services/prepService';
 import { toLocalDateString } from '../utils/date';
 
@@ -57,40 +56,44 @@ export default function PrepSheetPage() {
         <button className="btn btn-primary" type="submit">Add Task</button>
       </form>
       <div style={{ height: 16 }} />
-      <div className="card">
-        <div className="table-scroll">
-          <table className="list-table">
-            <thead>
-              <tr>
-                <th>Order</th>
-                <th>Task</th>
-                <th>Notes</th>
-                <th>Quantity</th>
-                <th>Assigned To</th>
-                <th>Status</th>
-                <th>Priority</th>
-                <th>Sort</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.map((task, index) => (
-                <PrepTaskRow
-                  key={task.id}
-                  task={task}
-                  index={index}
-                  isFirst={index === 0}
-                  isLast={index === tasks.length - 1}
-                  onStatus={(current) => updatePrepTask(current.id, { status: current.status === 'done' ? 'pending' : 'done' }).then(load)}
-                  onPriority={(current) => updatePrepTask(current.id, { priority: nextPriority[current.priority] }).then(load)}
-                  onMoveUp={() => swapWithNeighbor(index, -1)}
-                  onMoveDown={() => swapWithNeighbor(index, 1)}
-                  onDelete={(id) => deletePrepTask(id).then(load)}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="control-list">
+        {tasks.map((task, index) => (
+          <div key={task.id} className="control-card control-card-task">
+            <div className="control-card-head">
+              <div>
+                <div className="helper-text">Task {index + 1}</div>
+                <div className="control-card-title">{task.task_name}</div>
+              </div>
+              <div className="control-card-actions">
+                <button className="btn btn-ghost sort-btn" type="button" disabled={index === 0} onClick={() => swapWithNeighbor(index, -1)}>Up</button>
+                <button className="btn btn-ghost sort-btn" type="button" disabled={index === tasks.length - 1} onClick={() => swapWithNeighbor(index, 1)}>Down</button>
+              </div>
+            </div>
+            <div className="control-card-grid">
+              <div>
+                <div className="helper-text">Notes</div>
+                <div>{task.notes || '—'}</div>
+              </div>
+              <div>
+                <div className="helper-text">Quantity</div>
+                <div>{[task.quantity, task.unit].filter(Boolean).join(' ') || '—'}</div>
+              </div>
+              <div>
+                <div className="helper-text">Assigned To</div>
+                <div>{task.assigned_to || '—'}</div>
+              </div>
+            </div>
+            <div className="control-card-footer">
+              <button type="button" className={`prep-status ${task.status}`} onClick={() => updatePrepTask(task.id, { status: task.status === 'done' ? 'pending' : 'done' }).then(load)}>
+                {task.status}
+              </button>
+              <button type="button" className={`prep-priority ${task.priority}`} onClick={() => updatePrepTask(task.id, { priority: nextPriority[task.priority] }).then(load)}>
+                {task.priority}
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => deletePrepTask(task.id).then(load)}>Delete</button>
+            </div>
+          </div>
+        ))}
       </div>
     </AppShell>
   );

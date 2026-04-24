@@ -4,7 +4,7 @@ export default function LandingPage() {
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <div className="lock-icon green"><svg><use href="#ico-shield" /></svg></div>
+        <div className="lock-icon green"><span className="material-symbols-outlined" aria-hidden="true">shield</span></div>
         <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 28 }}>
           <div className="logo-icon">CS</div>
           <div className="logo-text">Chef<span>Station</span></div>

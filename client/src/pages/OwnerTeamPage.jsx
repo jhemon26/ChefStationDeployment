@@ -23,40 +23,49 @@ export default function OwnerTeamPage() {
   return (
     <AppShell>
       <PageHeader title="Team" subtitle="Manage kitchen staff accounts" />
-      <div className="card">
-        <div className="table-scroll">
-          <table className="list-table">
-            <thead>
-              <tr><th>Name</th><th>Username</th><th>Role</th><th>Joined</th><th>Last Login</th><th>Action</th></tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.display_name}</td>
-                  <td>{row.username}</td>
-                  <td>{row.role}</td>
-                  <td>{formatDate(row.created_at)}</td>
-                  <td>{formatDateTime(row.last_login)}</td>
-                  <td className="toolbar">
-                    {row.id === user.id ? (
-                      <span>You</span>
-                    ) : (
-                      <>
-                        <button type="button" className="btn btn-ghost" onClick={() => (row.is_active ? suspendUser(row.id) : activateUser(row.id)).then(load)}>
-                          {row.is_active ? 'Suspend' : 'Activate'}
-                        </button>
-                        {row.role === 'staff' ? <button type="button" className="btn btn-danger" onClick={async () => {
-                          if (!(await confirmAction(`Remove ${row.display_name}?`, { confirmLabel: 'Remove Staff' }))) return;
-                          deleteUser(row.id).then(load);
-                        }}>Remove</button> : null}
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="control-list">
+        {rows.map((row) => (
+          <div key={row.id} className="control-card">
+            <div className="control-card-head">
+              <div>
+                <div className="control-card-title">{row.display_name}</div>
+                <div className="helper-text">{row.username}</div>
+              </div>
+              <div className={`status-chip ${row.is_active ? 'active' : 'inactive'}`}>
+                {row.is_active ? 'Active' : 'Inactive'}
+              </div>
+            </div>
+            <div className="control-card-grid">
+              <div>
+                <div className="helper-text">Role</div>
+                <div>{row.role}</div>
+              </div>
+              <div>
+                <div className="helper-text">Joined</div>
+                <div>{formatDate(row.created_at)}</div>
+              </div>
+              <div>
+                <div className="helper-text">Last Login</div>
+                <div>{formatDateTime(row.last_login)}</div>
+              </div>
+            </div>
+            <div className="control-card-footer">
+              {row.id === user.id ? (
+                <span className="badge badge-blue">You</span>
+              ) : (
+                <>
+                  <button type="button" className="btn btn-ghost" onClick={() => (row.is_active ? suspendUser(row.id) : activateUser(row.id)).then(load)}>
+                    {row.is_active ? 'Suspend' : 'Activate'}
+                  </button>
+                  {row.role === 'staff' ? <button type="button" className="btn btn-danger" onClick={async () => {
+                    if (!(await confirmAction(`Remove ${row.display_name}?`, { confirmLabel: 'Remove Staff' }))) return;
+                    deleteUser(row.id).then(load);
+                  }}>Remove</button> : null}
+                </>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </AppShell>
   );

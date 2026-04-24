@@ -30,7 +30,7 @@ export default function RegisterOwnerPage() {
   return (
     <div className="auth-page">
       <form className="auth-box" onSubmit={onSubmit}>
-        <div className="lock-icon blue"><svg><use href="#ico-building" /></svg></div>
+        <div className="lock-icon blue"><span className="material-symbols-outlined" aria-hidden="true">storefront</span></div>
         <h2>Register Restaurant</h2>
         <p className="sub">Set up your kitchen on ChefStation</p>
         <div className="form-group">
