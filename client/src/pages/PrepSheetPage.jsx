@@ -58,11 +58,11 @@ export default function PrepSheetPage() {
       <div style={{ height: 16 }} />
       <div className="control-list">
         {tasks.map((task, index) => (
-          <div key={task.id} className="control-card control-card-task">
+          <div key={task.id} className={`control-card control-card-task ${task.status === 'done' ? 'is-complete' : ''}`}>
             <div className="control-card-head">
               <div>
                 <div className="helper-text">Task {index + 1}</div>
-                <div className="control-card-title">{task.task_name}</div>
+                <div className="control-card-title control-card-title-completable">{task.task_name}</div>
               </div>
               <div className="control-card-actions">
                 <button className="btn btn-ghost sort-btn" type="button" disabled={index === 0} onClick={() => swapWithNeighbor(index, -1)}>Up</button>
@@ -72,17 +72,22 @@ export default function PrepSheetPage() {
             <div className="control-card-grid">
               <div>
                 <div className="helper-text">Notes</div>
-                <div>{task.notes || '—'}</div>
+                <div className="control-card-copy-completable">{task.notes || '—'}</div>
               </div>
               <div>
                 <div className="helper-text">Quantity</div>
-                <div>{[task.quantity, task.unit].filter(Boolean).join(' ') || '—'}</div>
+                <div className="control-card-copy-completable">{[task.quantity, task.unit].filter(Boolean).join(' ') || '—'}</div>
               </div>
               <div>
                 <div className="helper-text">Assigned To</div>
-                <div>{task.assigned_to || '—'}</div>
+                <div className="control-card-copy-completable">{task.assigned_to || '—'}</div>
               </div>
             </div>
+            {task.status === 'done' ? (
+              <div className="control-card-completed-by">
+                Completed by {task.completed_by_name || 'a team member'}
+              </div>
+            ) : null}
             <div className="control-card-footer">
               <button type="button" className={`prep-status ${task.status}`} onClick={() => updatePrepTask(task.id, { status: task.status === 'done' ? 'pending' : 'done' }).then(load)}>
                 {task.status}

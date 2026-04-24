@@ -47,7 +47,7 @@ export default function TodoPage() {
             <div className="control-card-head">
               <div>
                 <div className="helper-text">Todo {index + 1}</div>
-                <div className="control-card-title">{item.task_text}</div>
+                <div className="control-card-title control-card-title-completable">{item.task_text}</div>
               </div>
               <div className="control-card-actions">
                 <button
@@ -81,9 +81,14 @@ export default function TodoPage() {
             <div className="control-card-grid">
               <div>
                 <div className="helper-text">Notes</div>
-                <div>{item.notes || '—'}</div>
+                <div className="control-card-copy-completable">{item.notes || '—'}</div>
               </div>
             </div>
+            {item.is_completed ? (
+              <div className="control-card-completed-by">
+                Completed by {item.completed_by_name || 'a team member'}
+              </div>
+            ) : null}
             <div className="control-card-footer">
               <button
                 type="button"
