@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { getMyProfile, updateMyProfile } from '../services/userService';
 
 export default function ProfilePage() {
-  const { user, setUser, logout } = useAuth();
+  const { user, setUser } = useAuth();
   const [form, setForm] = useState({
     displayName: '',
     username: '',
@@ -143,14 +143,9 @@ export default function ProfilePage() {
           {error ? <div className="error-text">{error}</div> : null}
           <div className="control-card-footer">
             <button className="btn btn-primary" type="submit">Save Profile</button>
-            <button className="btn btn-danger" type="button" onClick={logout}>Logout</button>
           </div>
             </>
-          ) : (
-            <div className="control-card-footer">
-              <button className="btn btn-danger" type="button" onClick={logout}>Logout</button>
-            </div>
-          )}
+          ) : null}
         </form>
       </div>
     </AppShell>
