@@ -1,58 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-
-const sectionsByRole = {
-  super_admin: [
-    {
-      label: 'Platform Admin',
-      links: [
-        ['Overview', '/super', 'ico-shield'],
-        ['Restaurants', '/super/restaurants', 'ico-building'],
-        ['All Users', '/super/users', 'ico-users'],
-      ],
-    },
-  ],
-  owner: [
-    {
-      label: 'Management',
-      links: [
-        ['Team', '/owner/team', 'ico-users'],
-        ['Invite Codes', '/owner/codes', 'ico-key'],
-        ['Settings', '/owner/settings', 'ico-settings'],
-      ],
-    },
-    {
-      label: 'Kitchen',
-      links: [
-        ['Dashboard', '/dashboard', 'ico-dashboard'],
-        ['Food List', '/food-prep', 'ico-flame'],
-        ['Menu Counter', '/menu-counter', 'ico-clipboard'],
-        ['Prep Sheet', '/prep-sheet', 'ico-edit'],
-        ['Tomorrow', '/todos', 'ico-check'],
-        ['Stock Tracker', '/stock', 'ico-box'],
-        ['Recipe Book', '/recipes', 'ico-book'],
-      ],
-    },
-  ],
-  staff: [
-    {
-      label: 'Kitchen',
-      links: [
-        ['Dashboard', '/dashboard', 'ico-dashboard'],
-        ['Food List', '/food-prep', 'ico-flame'],
-        ['Menu Counter', '/menu-counter', 'ico-clipboard'],
-        ['Prep Sheet', '/prep-sheet', 'ico-edit'],
-        ['Tomorrow', '/todos', 'ico-check'],
-        ['Stock Tracker', '/stock', 'ico-box'],
-        ['Recipe Book', '/recipes', 'ico-book'],
-      ],
-    },
-  ],
-};
+import { navigationByRole } from '../utils/navigation';
 
 export default function Sidebar({ open, setOpen }) {
   const { user, logout } = useAuth();
-  const sections = sectionsByRole[user?.role] || [];
+  const sections = navigationByRole[user?.role] || [];
   const initials = user?.display_name
     ?.split(' ')
     .map((part) => part[0])
@@ -84,8 +36,8 @@ export default function Sidebar({ open, setOpen }) {
                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                 onClick={() => setOpen(false)}
               >
-                <span className="icon"><svg><use href={`#${icon}`} /></svg></span>
-                {label}
+                <span className="nav-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
+                <span className="nav-link-copy">{label}</span>
               </NavLink>
             ))}
           </nav>
@@ -95,8 +47,8 @@ export default function Sidebar({ open, setOpen }) {
 
       <div style={{ padding: '8px 0' }}>
         <button type="button" className="nav-item" onClick={logout} style={{ color: 'var(--red)', width: '100%', background: 'transparent' }}>
-          <span className="icon"><svg style={{ color: 'var(--red)' }}><use href="#ico-logout" /></svg></span>
-          Logout
+          <span className="nav-icon material-symbols-outlined" aria-hidden="true">logout</span>
+          <span className="nav-link-copy">Logout</span>
         </button>
       </div>
 
