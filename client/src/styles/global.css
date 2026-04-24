@@ -197,54 +197,20 @@ textarea {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #1cf28f 0%, #1fe6c4 52%, #30d975 100%);
+  background: linear-gradient(135deg, #86a7ff 0%, #77bfff 52%, #62d1ff 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 16px 32px rgba(16, 240, 147, 0.16);
+    0 16px 32px rgba(103, 200, 255, 0.16);
 }
 
-.logo-monogram {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  width: 100%;
-  height: 100%;
-  transform: translateX(-1px);
-}
-
-.logo-monogram-bar {
-  position: absolute;
-  left: 16px;
-  right: 15px;
-  top: 50%;
-  height: 8px;
-  border-radius: 999px;
-  background: #09131f;
-  transform: translateY(-50%);
-  opacity: 0.95;
-}
-
-.logo-glyph {
+.logo-badge-copy {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2.45rem;
-  line-height: 0.9;
-  color: #09131f;
-  letter-spacing: -0.16em;
-  text-transform: lowercase;
+  font-weight: 700;
+  font-size: 1.56rem;
+  line-height: 1;
+  color: #eef4ff;
+  letter-spacing: -0.06em;
   display: inline-block;
-  position: relative;
-  z-index: 1;
-}
-
-.logo-glyph-c {
-  transform: translateX(5px) scaleX(1.02);
-}
-
-.logo-glyph-s {
-  transform: translateX(-6px) scaleX(0.98);
 }
 
 .logo-text,
@@ -264,7 +230,7 @@ textarea {
 
 .logo-text-station,
 .logo-type span:last-child {
-  color: #1fe897;
+  color: #77bfff;
 }
 
 .brand-logo-centered .logo-icon {
