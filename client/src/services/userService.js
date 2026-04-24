@@ -1,6 +1,8 @@
 import api from './api';
 
 export const listUsers = () => api.get('/users');
+export const getMyProfile = () => api.get('/users/me');
+export const updateMyProfile = (payload) => api.put('/users/me', payload);
 export const suspendUser = (id) => api.put(`/users/${id}/suspend`);
 export const activateUser = (id) => api.put(`/users/${id}/activate`);
 export const deleteUser = (id) => api.delete(`/users/${id}`);

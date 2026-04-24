@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { hashPassword } = require('../utils/hashPassword');
+const { hashPassword, comparePassword } = require('../utils/hashPassword');
 
 async function list(req, res, next) {
   try {
@@ -12,6 +12,47 @@ async function list(req, res, next) {
       return res.json(rows);
     }
     return res.status(403).json({ error: 'Forbidden' });
+  } catch (e) { next(e); }
+}
+
+async function me(req, res, next) {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (e) { next(e); }
+}
+
+async function updateMe(req, res, next) {
+  try {
+    const current = await User.findAuthById(req.user.id);
+    if (!current) return res.status(404).json({ error: 'User not found' });
+
+    const nextUsername = req.body.username?.trim();
+    const nextDisplayName = req.body.displayName?.trim();
+    const currentPassword = req.body.currentPassword || '';
+    const newPassword = req.body.newPassword || '';
+
+    if (nextUsername && nextUsername !== current.username) {
+      const existing = await User.findByUsername(nextUsername);
+      if (existing && existing.id !== current.id) {
+        return res.status(409).json({ error: 'Username already taken' });
+      }
+    }
+
+    let passwordHash = null;
+    if (newPassword) {
+      const ok = await comparePassword(currentPassword, current.password_hash);
+      if (!ok) return res.status(400).json({ error: 'Current password is incorrect' });
+      passwordHash = await hashPassword(newPassword);
+    }
+
+    const updated = await User.updateSelf(current.id, {
+      username: nextUsername || null,
+      display_name: nextDisplayName || null,
+      password_hash: passwordHash,
+    });
+    res.json(updated);
   } catch (e) { next(e); }
 }
 
@@ -77,4 +118,4 @@ async function resetPassword(req, res, next) {
   } catch (e) { next(e); }
 }
 
-module.exports = { list, suspend, activate, remove, resetPassword };
+module.exports = { list, me, updateMe, suspend, activate, remove, resetPassword };

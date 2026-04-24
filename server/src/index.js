@@ -43,7 +43,7 @@ app.use('/uploads', express.static(path.join(env.UPLOAD_DIR)));
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/restaurants', authenticate, requireRole('super_admin'), restaurantRoutes);
-app.use('/api/users', authenticate, requireRole('super_admin', 'owner'), userRoutes);
+app.use('/api/users', authenticate, userRoutes);
 app.use('/api/invite-codes', authenticate, requireRole('owner'), inviteCodeRoutes);
 app.use('/api/dishes', authenticate, requireRole('owner', 'staff'), dishRoutes);
 app.use('/api/menu-counts', authenticate, requireRole('owner', 'staff'), menuRoutes);

@@ -21,6 +21,7 @@ import SuperUsersPage from './pages/SuperUsersPage';
 import OwnerTeamPage from './pages/OwnerTeamPage';
 import OwnerCodesPage from './pages/OwnerCodesPage';
 import OwnerSettingsPage from './pages/OwnerSettingsPage';
+import ProfilePage from './pages/ProfilePage';
 
 function HomeRedirect() {
   const { user } = useAuth();
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/stock" element={<StockTrackerPage />} />
           <Route path="/todos" element={<TodoPage />} />
           <Route path="/recipes" element={<RecipeBookPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         <Route element={<ProtectedRoute roles={['owner']} />}>
@@ -59,6 +61,7 @@ export default function App() {
           <Route path="/super" element={<SuperDashPage />} />
           <Route path="/super/restaurants" element={<SuperRestaurantsPage />} />
           <Route path="/super/users" element={<SuperUsersPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -7,6 +7,15 @@ const findById = async (id) => {
   return rows[0] || null;
 };
 
+const findAuthById = async (id) => {
+  const { rows } = await query(
+    `SELECT id, restaurant_id, username, password_hash, display_name, role, is_active, last_login, created_at
+     FROM users WHERE id = $1`,
+    [id]
+  );
+  return rows[0] || null;
+};
+
 const findByUsername = async (username) => {
   const { rows } = await query(
     `SELECT id, restaurant_id, username, password_hash, display_name, role, is_active FROM users WHERE username = $1`,
@@ -59,12 +68,26 @@ const updatePassword = async (id, password_hash) => {
   await query(`UPDATE users SET password_hash = $2 WHERE id = $1`, [password_hash, id]);
 };
 
+const updateSelf = async (id, { username, display_name, password_hash }) => {
+  const { rows } = await query(
+    `UPDATE users SET
+       username = COALESCE($2, username),
+       display_name = COALESCE($3, display_name),
+       password_hash = COALESCE($4, password_hash)
+     WHERE id = $1
+     RETURNING ${publicFields}`,
+    [id, username, display_name, password_hash]
+  );
+  return rows[0] || null;
+};
+
 const remove = async (id) => {
   await query(`DELETE FROM users WHERE id = $1`, [id]);
 };
 
 module.exports = {
   findById,
+  findAuthById,
   findByUsername,
   create,
   listByRestaurant,
@@ -72,5 +95,6 @@ module.exports = {
   updateLastLogin,
   setActive,
   updatePassword,
+  updateSelf,
   remove,
 };
