@@ -21,6 +21,8 @@ const recipeRoutes = require('./routes/recipeRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 
 const app = express();
+// Netlify's edge sits in front — trust one hop so rate-limiter sees real IPs
+app.set('trust proxy', 1);
 const allowedOrigins = new Set(env.CORS_ORIGINS);
 const isProd = env.NODE_ENV === 'production';
 
