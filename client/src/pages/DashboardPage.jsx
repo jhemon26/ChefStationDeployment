@@ -36,9 +36,10 @@ export default function DashboardPage() {
   };
 
   const soldOut = menuCounts.filter((item) => item.remaining_portions === 0).length;
+  const activeMenu = menuCounts.filter((item) => item.remaining_portions > 0).length;
   const stats = sortAlpha([
     { label: 'Low Stock Alerts', value: lowStock.length, className: 'red' },
-    { label: 'Menu Items Active', value: menuCounts.length, className: 'green' },
+    { label: 'Menu Items Active', value: activeMenu, className: 'green' },
     { label: 'Prep Tasks Tomorrow', value: prepTasks.length, className: 'amber' },
     { label: 'Sold Out', value: soldOut, className: 'red' },
   ], (item) => item.label);

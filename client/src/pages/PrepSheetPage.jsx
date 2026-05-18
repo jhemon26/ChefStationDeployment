@@ -3,6 +3,7 @@ import AppShell from '../components/AppShell';
 import PageHeader from '../components/PageHeader';
 import { createPrepTask, deletePrepTask, listPrepTasks, updatePrepTask } from '../services/prepService';
 import { toLocalDateString } from '../utils/date';
+import { confirmAction } from '../utils/confirmAction';
 
 const nextPriority = { urgent: 'medium', medium: 'low', low: 'urgent' };
 
@@ -95,7 +96,7 @@ export default function PrepSheetPage() {
               <button type="button" className={`prep-priority ${task.priority}`} onClick={() => updatePrepTask(task.id, { priority: nextPriority[task.priority] }).then(load)}>
                 {task.priority}
               </button>
-              <button type="button" className="btn btn-danger" onClick={() => deletePrepTask(task.id).then(load)}>Delete</button>
+              <button type="button" className="btn btn-danger" onClick={async () => { if (await confirmAction(`Delete "${task.task_name}"?`, { confirmLabel: 'Delete Task' })) { await deletePrepTask(task.id); await load(); } }}>Delete</button>
             </div>
           </div>
         ))}
