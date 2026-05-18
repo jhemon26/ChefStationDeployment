@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AppShell from '../components/AppShell';
 import AddAllergenModal from '../components/AddAllergenModal';
 import AllergenChip from '../components/AllergenChip';
@@ -17,6 +17,8 @@ export default function RecipeBookPage() {
   const [error, setError] = useState('');
   const [customAllergens, setCustomAllergens] = useState([]);
   const [showAddAllergen, setShowAddAllergen] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const fileInputRef = useRef(null);
   const [form, setForm] = useState({
     dish_name: '',
     dish_section: '',
@@ -75,6 +77,8 @@ export default function RecipeBookPage() {
         photo: null
       });
       setCustomAllergens([]);
+      setPhotoPreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       await load();
     } catch (err) {
       const details = err.response?.data?.details;
@@ -158,8 +162,9 @@ export default function RecipeBookPage() {
         />
         <textarea
           className="recipe-textarea"
-          placeholder="Instructions"
+          placeholder="Instructions (required)"
           value={form.steps}
+          required
           onChange={(e) => setForm({ ...form, steps: e.target.value })}
         />
         <textarea
@@ -168,7 +173,37 @@ export default function RecipeBookPage() {
           value={form.notes}
           onChange={(e) => setForm({ ...form, notes: e.target.value })}
         />
-        <input type="file" accept=".jpg,.jpeg,.png,.webp" onChange={(e) => setForm({ ...form, photo: e.target.files?.[0] || null })} />
+        <div>
+          <label className="form-label">Photo (optional)</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {photoPreview ? (
+              <div style={{ position: 'relative', width: 80, height: 80, borderRadius: 10, overflow: 'hidden', flexShrink: 0 }}>
+                <img src={photoPreview} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <button
+                  type="button"
+                  style={{ position: 'absolute', top: 2, right: 2, background: 'rgba(0,0,0,0.6)', border: 'none', borderRadius: '50%', width: 20, height: 20, cursor: 'pointer', color: '#fff', fontSize: 12, lineHeight: '20px', textAlign: 'center', padding: 0 }}
+                  onClick={() => { setPhotoPreview(null); setForm({ ...form, photo: null }); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                >×</button>
+              </div>
+            ) : null}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setForm({ ...form, photo: file });
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (ev) => setPhotoPreview(ev.target.result);
+                  reader.readAsDataURL(file);
+                } else {
+                  setPhotoPreview(null);
+                }
+              }}
+            />
+          </div>
+        </div>
         {error ? <div className="error-text">{error}</div> : null}
         <button className="btn btn-primary" type="submit">Add Recipe</button>
       </form>
