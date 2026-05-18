@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AppShell from '../components/AppShell';
 import PageHeader from '../components/PageHeader';
 import { createTodo, deleteTodo, listTodos, updateTodo } from '../services/todoService';
 import { toLocalDateString } from '../utils/date';
 import { confirmAction } from '../utils/confirmAction';
 
-const today = toLocalDateString();
 const nextPriority = { low: 'medium', medium: 'high', high: 'low' };
 
 export default function TodoPage() {
+  const today = useMemo(() => toLocalDateString(), []);
   const [items, setItems] = useState([]);
   const [form, setForm] = useState({ task_text: '', notes: '', priority: 'medium' });
 
@@ -24,12 +24,11 @@ export default function TodoPage() {
   return (
     <AppShell>
       <PageHeader title="Tomorrow's To-Do" subtitle="Plan sequence, notes, status, and priority" />
-      <form className="card inline-grid two" onSubmit={(e) => {
+      <form className="card inline-grid two" onSubmit={async (e) => {
         e.preventDefault();
-        createTodo({ ...form, date: today }).then(() => {
-          setForm({ task_text: '', notes: '', priority: 'medium' });
-          load();
-        });
+        await createTodo({ ...form, date: today });
+        setForm({ task_text: '', notes: '', priority: 'medium' });
+        await load();
       }}>
         <input placeholder="Task text" value={form.task_text} onChange={(e) => setForm({ ...form, task_text: e.target.value })} />
         <input placeholder="Notes / details" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
@@ -54,12 +53,13 @@ export default function TodoPage() {
                   type="button"
                   className="btn btn-ghost sort-btn"
                   disabled={index === 0}
-                  onClick={() =>
-                    Promise.all([
+                  onClick={async () => {
+                    await Promise.all([
                       updateTodo(item.id, { sort_order: items[index - 1].sort_order }),
                       updateTodo(items[index - 1].id, { sort_order: item.sort_order }),
-                    ]).then(load)
-                  }
+                    ]);
+                    await load();
+                  }}
                 >
                   Up
                 </button>
@@ -67,12 +67,13 @@ export default function TodoPage() {
                   type="button"
                   className="btn btn-ghost sort-btn"
                   disabled={index === items.length - 1}
-                  onClick={() =>
-                    Promise.all([
+                  onClick={async () => {
+                    await Promise.all([
                       updateTodo(item.id, { sort_order: items[index + 1].sort_order }),
                       updateTodo(items[index + 1].id, { sort_order: item.sort_order }),
-                    ]).then(load)
-                  }
+                    ]);
+                    await load();
+                  }}
                 >
                   Down
                 </button>

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AppShell from '../components/AppShell';
 import PageHeader from '../components/PageHeader';
 import { createPrepTask, deletePrepTask, listPrepTasks, updatePrepTask } from '../services/prepService';
 import { toLocalDateString } from '../utils/date';
 
-const today = toLocalDateString();
 const nextPriority = { urgent: 'medium', medium: 'low', low: 'urgent' };
 
 export default function PrepSheetPage() {
+  const today = useMemo(() => toLocalDateString(), []);
   const [tasks, setTasks] = useState([]);
   const [form, setForm] = useState({ task_name: '', notes: '', quantity: '', unit: '', assigned_to: '', priority: 'medium' });
 
@@ -24,7 +24,7 @@ export default function PrepSheetPage() {
     event.preventDefault();
     await createPrepTask({ ...form, date: today });
     setForm({ task_name: '', notes: '', quantity: '', unit: '', assigned_to: '', priority: 'medium' });
-    load();
+    await load();
   };
 
   const swapWithNeighbor = async (index, direction) => {
@@ -36,7 +36,7 @@ export default function PrepSheetPage() {
       updatePrepTask(current.id, { sort_order: neighbor.sort_order }),
       updatePrepTask(neighbor.id, { sort_order: current.sort_order }),
     ]);
-    load();
+    await load();
   };
 
   return (

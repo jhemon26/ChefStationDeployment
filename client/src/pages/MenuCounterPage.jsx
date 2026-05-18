@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AppShell from '../components/AppShell';
 import PageHeader from '../components/PageHeader';
 import AllergenChip from '../components/AllergenChip';
@@ -8,10 +8,10 @@ import { toLocalDateString } from '../utils/date';
 import { confirmAction } from '../utils/confirmAction';
 import { sortAlpha } from '../utils/sortHelpers';
 
-const today = toLocalDateString();
-
 export default function MenuCounterPage() {
+  const today = useMemo(() => toLocalDateString(), []);
   const [items, setItems] = useState([]);
+  const adjusting = useRef(new Set());
 
   const load = async () => {
     const [{ data: counts }, { data: dishes }] = await Promise.all([listMenuCounts(today), listDishes()]);
@@ -32,18 +32,25 @@ export default function MenuCounterPage() {
   }, []);
 
   const adjust = async (item, delta) => {
-    if (String(item.id).startsWith('new-')) {
-      if (delta < 0) return;
-      await createMenuCount({
-        dish_id: item.dish_id,
-        date: today,
-        total_portions: Math.max(0, delta > 0 ? 1 : 0),
-        remaining_portions: Math.max(0, delta > 0 ? 1 : 0),
-      });
-    } else {
-      await updateMenuCount(item.id, { delta });
+    const key = item.dish_id;
+    if (adjusting.current.has(key)) return;
+    adjusting.current.add(key);
+    try {
+      if (String(item.id).startsWith('new-')) {
+        if (delta < 0) return;
+        await createMenuCount({
+          dish_id: item.dish_id,
+          date: today,
+          total_portions: 1,
+          remaining_portions: 1,
+        });
+      } else {
+        await updateMenuCount(item.id, { delta });
+      }
+      await load();
+    } finally {
+      adjusting.current.delete(key);
     }
-    load();
   };
 
   const handleResetAll = async () => {
@@ -81,7 +88,7 @@ export default function MenuCounterPage() {
                 type="button"
                 className="stock-stepper-btn minus"
                 onClick={() => adjust(item, -1)}
-                disabled={item.remaining_portions <= 0}
+                disabled={item.remaining_portions <= 0 || adjusting.current.has(item.dish_id)}
                 aria-label={`Decrease ${item.dish_name} count`}
               >
                 -
@@ -97,6 +104,7 @@ export default function MenuCounterPage() {
                 type="button"
                 className="stock-stepper-btn plus"
                 onClick={() => adjust(item, 1)}
+                disabled={adjusting.current.has(item.dish_id)}
                 aria-label={`Increase ${item.dish_name} count`}
               >
                 +

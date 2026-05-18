@@ -20,3 +20,4 @@ notes.txt
 *.p12
 *.pfx
 secrets/
+.run/

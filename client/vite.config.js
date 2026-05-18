@@ -6,13 +6,13 @@ const resolveProxyTarget = (apiUrl) => {
   try {
     return new URL(apiUrl).origin;
   } catch {
-    return 'http://localhost:5000';
+    return 'http://localhost:5001';
   }
 };
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, path.resolve(__dirname, '..'), '');
-  const proxyTarget = resolveProxyTarget(env.VITE_API_URL || 'http://localhost:5000/api');
+  const proxyTarget = resolveProxyTarget(env.VITE_API_URL || 'http://localhost:5001/api');
 
   return {
     envDir: '..',
