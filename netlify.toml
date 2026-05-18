@@ -8,13 +8,13 @@
 # forwards them server-side — no mixed-content issue, no SSL needed on the droplet.
 [[redirects]]
   from = "/api/*"
-  to = "http://144.126.239.34/api/:splat"
+  to = "http://144.126.239.34:5001/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/uploads/*"
-  to = "http://144.126.239.34/uploads/:splat"
+  to = "http://144.126.239.34:5001/uploads/:splat"
   status = 200
   force = true
 
