@@ -22,12 +22,44 @@ const settingsRoutes = require('./routes/settingsRoutes');
 
 const app = express();
 const allowedOrigins = new Set(env.CORS_ORIGINS);
+const isProd = env.NODE_ENV === 'production';
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    contentSecurityPolicy: isProd
+      ? {
+          directives: {
+            defaultSrc: ["'none'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ["'self'", 'data:', 'blob:'],
+            connectSrc: ["'self'"],
+            fontSrc: ["'self'"],
+            objectSrc: ["'none'"],
+            frameAncestors: ["'none'"],
+          },
+        }
+      : false,
+    hsts: isProd ? { maxAge: 31536000, includeSubDomains: true } : false,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  })
+);
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.size === 0 || allowedOrigins.has(origin)) {
+      // In production, always require an explicit allow-list — never fail open
+      if (!origin) {
+        // Same-origin or server-to-server — allow
+        callback(null, true);
+        return;
+      }
+      if (isProd && allowedOrigins.size === 0) {
+        callback(new Error('CORS origins not configured'));
+        return;
+      }
+      if (allowedOrigins.size === 0 || allowedOrigins.has(origin)) {
         callback(null, true);
         return;
       }
@@ -36,9 +68,10 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(apiLimiter);
-app.use('/uploads', express.static(path.join(env.UPLOAD_DIR)));
+// Serve uploads only from the configured directory — no directory listing
+app.use('/uploads', express.static(path.join(env.UPLOAD_DIR), { index: false, dotfiles: 'deny' }));
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 app.use('/api/auth', authRoutes);

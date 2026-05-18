@@ -65,7 +65,7 @@ const setActive = async (id, isActive) => {
 };
 
 const updatePassword = async (id, password_hash) => {
-  await query(`UPDATE users SET password_hash = $2 WHERE id = $1`, [password_hash, id]);
+  await query(`UPDATE users SET password_hash = $2 WHERE id = $1`, [id, password_hash]);
 };
 
 const updateSelf = async (id, { username, display_name, password_hash, avatar_url }) => {

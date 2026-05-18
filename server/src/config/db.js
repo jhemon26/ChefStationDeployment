@@ -5,6 +5,8 @@ const pool = new Pool({
   connectionString: env.DATABASE_URL,
   max: 10,
   idleTimeoutMillis: 30_000,
+  statement_timeout: 30_000,
+  connectionTimeoutMillis: 5_000,
 });
 
 pool.on('error', (err) => {

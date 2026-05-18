@@ -148,8 +148,9 @@ async function seedTodosIfEmpty(client, restaurantId, date, createdBy) {
 async function seedDemoData() {
   const ownerUsername = 'demo_owner';
   const staffUsername = 'demo_staff';
-  const ownerPassword = 'owner12345';
-  const staffPassword = 'staff12345';
+  // Passwords are intentionally long and mixed — change before sharing access
+  const ownerPassword = 'RoyalOak#Owner2025!';
+  const staffPassword = 'RoyalOak#Staff2025!';
   const restaurantName = 'The Royal Oak';
 
   const ownerHash = await bcrypt.hash(ownerPassword, 12);
